@@ -12,10 +12,12 @@ bot.on("channel_post", async (ctx) => {
   const msg = ctx.channelPost;
   const { message_id, chat, text, date } = msg;
 
+  const chat_title = chat.title;
+
   try {
     await db.query(
-      "INSERT INTO messages (message_id, chat_id, text, date) VALUES ($1, $2, $3, to_timestamp($4))",
-      [message_id, chat.id.toString(), text || "", date]
+      "INSERT INTO messages (message_id, chat_id, text, date, chat_title) VALUES ($1, $2, $3, to_timestamp($4), $5)",
+      [message_id, chat.id.toString(), text || "", date, chat_title]
     );
   } catch (err) {
     console.error("DB error:", err.message);
