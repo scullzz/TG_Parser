@@ -16,7 +16,7 @@ bot.on("channel_post", async (ctx) => {
 
   try {
     await db.query(
-      "INSERT INTO messages (message_id, chat_id, text, date, chat_title) VALUES ($1, $2, $3, to_timestamp($4), $5)",
+      "INSERT INTO tg_messages (message_id, chat_id, text, date, chat_title) VALUES ($1, $2, $3, to_timestamp($4), $5)",
       [message_id, chat.id.toString(), text || "", date, chat_title]
     );
   } catch (err) {
@@ -27,7 +27,7 @@ bot.on("channel_post", async (ctx) => {
 app.get("/messages", async (req, res) => {
   try {
     const result = await db.query(`
-      SELECT * FROM messages 
+      SELECT * FROM tg_messages 
       WHERE date::date = CURRENT_DATE 
       ORDER BY date DESC;
     `);
